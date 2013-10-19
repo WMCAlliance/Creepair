@@ -1,0 +1,60 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>im.wma.dev.Creepair</groupId>
+  <artifactId>Creepair</artifactId>
+  <version>0.1-DEV</version>
+  <packaging>jar</packaging>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+    <repositories>
+        <repository>
+            <id>bukkit-repo</id>
+            <url>http://repo.bukkit.org/content/groups/public</url>
+        </repository>
+    </repositories>
+   
+    <dependencies>
+        <dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>bukkit</artifactId>
+            <version>LATEST</version>
+        </dependency>           
+    </dependencies>
+
+  <name>Creepair</name>
+  <url>http://wma.im</url>
+
+  <build>
+    <sourceDirectory>src/</sourceDirectory>
+        <resources>
+                <resource>
+                        <directory>${project.basedir}/res</directory>
+                        <filtering>true</filtering>
+                        <includes>
+                                <include>plugin.yml</include>
+                        </includes>
+                </resource>
+        </resources>
+  </build>
+
+  <issueManagement>
+          <system>GitHub Issues</system>
+          <url>https://github.com/WMCAlliance/Creepair/issues</url>
+  </issueManagement>
+  <scm>
+          <url>https://github.com/WMCAlliance/Creepair</url>
+          <connection>scm:git:git://github.com/WMCAlliance/Creepair.git</connection>
+          <developerConnection>scm:git:git@github.com:WMCAlliance/Creepair.git</developerConnection>
+  </scm>
+  <description>
+  Creepair
+</description>
+  <ciManagement>
+          <system>Jenkins</system>
+          <url>http://ci.blny.tk/job/Creepair/</url>
+  </ciManagement>
+</project>
