@@ -51,7 +51,7 @@
           <developerConnection>scm:git:git@github.com:WMCAlliance/Creepair.git</developerConnection>
   </scm>
   <description>
-  Creepair
+  The goal of this plugin is to repair natural creeper-exploded blocks near, or above, ground level.
 </description>
   <ciManagement>
           <system>Jenkins</system>
