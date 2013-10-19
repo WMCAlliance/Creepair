@@ -37,10 +37,9 @@ public class Creepair extends JavaPlugin implements Listener {
 
         if (event.getLocation().getBlockY() >= y) {
             event.setYield(0F);
-
-            for (Block block : event.blockList()) {
-                if (block.getType() == Material.GRASS || block.getType() == Material.DIRT)
-                    helper.add(new CreepairBlock(block, block.getType()));
+        for (Block block : new ArrayList<Block>(event.blockList()))
+            if (block.getType() == Material.GRASS || block.getType() == Material.DIRT){
+                event.blockList().remove(block);
             }
         }
     }
