@@ -1,0 +1,8 @@
+name: Creepair
+main: im.wma.dev.Creepair.Creepair
+version: ${version}
+website: http://wma.im
+commands:
+  wmafixes:
+    description: TODO.
+    usage: "TODO"
