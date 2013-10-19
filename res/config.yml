@@ -1,0 +1,4 @@
+config: true
+worlds:
+- survival
+above_y: 50
