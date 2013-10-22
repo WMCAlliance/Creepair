@@ -2,3 +2,12 @@ config: true
 worlds:
 - survival
 above_y: 50
+natural_blocks:
+- GRASS
+- DIRT
+- SANDSTONE
+- SAND
+- GRAVEL
+- LOG
+- WOOD
+- LEAVES

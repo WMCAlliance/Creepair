@@ -1,5 +1,5 @@
 name: Creepair
-main: im.wma.dev.Creepair.Creepair
+main: im.wma.dev.creepair.Creepair
 version: ${version}
 website: http://wma.im
 commands:
