@@ -18,17 +18,19 @@ public class Creepair extends JavaPlugin implements Listener {
     private final List<Material> naturalBlocks = new ArrayList<Material>();
     private int y;
     private RepairHelper helper;
-    
-    
+
+
     @Override
     public void onEnable() {
-        if (!this.getConfig().contains("config"))
+	this.saveDefaultConfig();
+        if (!this.getConfig().contains("config")) {
             this.getConfig().options().copyDefaults(true);
+        }
 
         worlds.addAll(this.getConfig().getStringList("worlds"));
         y = this.getConfig().getInt("above_y", 50);
         naturalBlocks.addAll(getMaterialList(this.getConfig().getStringList("natural_blocks")));
-        
+
 
         this.helper = new RepairHelper();
         this.getServer().getScheduler().scheduleSyncRepeatingTask(this, this.helper, 10, 10);
@@ -56,7 +58,7 @@ public class Creepair extends JavaPlugin implements Listener {
             }
         }
     }
-    
+
     private List<Material> getMaterialList(List<String> names) {
     	List<Material> materials = new ArrayList<Material>(names.size());
     	for (String materialName : names) {
@@ -68,11 +70,11 @@ public class Creepair extends JavaPlugin implements Listener {
     			getLogger().info("Added material " + materialName + ".");
     		}
     	}
-    	
+
     	return materials;
     }
 
-    public class CreepairBlock {
+    public class CreepairBlock implements Comparable<CreepairBlock>{
         public Block block;
         public Material original;
         public byte originalData;
@@ -82,10 +84,32 @@ public class Creepair extends JavaPlugin implements Listener {
          this.original = original;
          this.originalData = block.getData();
         }
+
+        public int compareTo(CreepairBlock otherBlock) {
+            if (otherBlock.equals(this)) {
+        	return 0;
+            } else if (block.getY() == otherBlock.block.getY()) {
+        	return block.getX() - otherBlock.block.getX();
+            } else {
+        	return block.getY() - otherBlock.block.getY();
+            }
+        }
+
+        @Override
+	public boolean equals(Object object) {
+            if (object instanceof CreepairBlock) {
+        	CreepairBlock otherBlock = (CreepairBlock) object;
+        	if (otherBlock.block.getLocation().equals(block.getLocation()) &&
+        		otherBlock.original == original && otherBlock.originalData == originalData) {
+        	    return true;
+        	}
+            }
+            return false;
+        }
     }
 
     public class RepairHelper implements Runnable {
-        private final ArrayList<CreepairBlock> blocks = new ArrayList<CreepairBlock>();
+        private final SortedList<CreepairBlock> blocks = new SortedList<CreepairBlock>();
 
         public void add(CreepairBlock block) {
             blocks.add(block);
@@ -99,13 +123,13 @@ public class Creepair extends JavaPlugin implements Listener {
 
                 if (blocks.get(0) != null) {
                     CreepairBlock block = blocks.get(0);
-                    
+
                     // Don't destroy player repairs.
                     if (block.block.getLocation().getBlock().getType() != Material.AIR) {
                     	blocks.remove(0);
                     	continue;
                     }
-                    
+
                     block.block.getLocation().getWorld().playEffect(block.block.getLocation(), Effect.STEP_SOUND, block.original.getId());
                     block.block.setType(block.original);
                     // Make damage/data values (different leaves and such) work.
