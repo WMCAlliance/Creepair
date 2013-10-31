@@ -1,7 +1,7 @@
 config: true
 worlds:
 - survival
-above_y: 50
+above_y: 54
 natural_blocks:
 - GRASS
 - DIRT
@@ -9,5 +9,5 @@ natural_blocks:
 - SAND
 - GRAVEL
 - LOG
-- WOOD
 - LEAVES
+- STONE
