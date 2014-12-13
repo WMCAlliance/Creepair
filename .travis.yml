@@ -12,4 +12,4 @@ notifications:
       - "Build details : %{build_url} - Build Time : %{duration}"
 branches:
   only:
-    - development
+    - master
