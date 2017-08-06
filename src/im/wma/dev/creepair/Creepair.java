@@ -2,7 +2,7 @@ package im.wma.dev.creepair;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.logging.Level;
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -60,14 +60,14 @@ public class Creepair extends JavaPlugin implements Listener {
     }
 
     private List<Material> getMaterialList(List<String> names) {
-    	List<Material> materials = new ArrayList<Material>(names.size());
+    	List<Material> materials = new ArrayList<>(names.size());
     	for (String materialName : names) {
     		Material material = Material.matchMaterial(materialName);
     		if (material == null) {
-    			getLogger().warning("Skipping material " + materialName + " didn't match a material.");
+    			getLogger().log(Level.WARNING, "Skipping material {0} didn''t match a material.", materialName);
     		} else {
     			materials.add(material);
-    			getLogger().info("Added material " + materialName + ".");
+    			getLogger().log(Level.INFO, "Added material {0}.", materialName);
     		}
     	}
 
@@ -109,7 +109,7 @@ public class Creepair extends JavaPlugin implements Listener {
     }
 
     public class RepairHelper implements Runnable {
-        private final SortedList<CreepairBlock> blocks = new SortedList<CreepairBlock>();
+        private final SortedList<CreepairBlock> blocks = new SortedList<>();
 
         public void add(CreepairBlock block) {
             blocks.add(block);
@@ -117,7 +117,7 @@ public class Creepair extends JavaPlugin implements Listener {
 
         public void run() {
             for (int i = 0; i < 5; i++) {
-                if (blocks.size() == 0) {
+                if (blocks.isEmpty()) {
                     return;
                 }
 
