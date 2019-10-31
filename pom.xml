@@ -3,7 +3,7 @@
    <modelVersion>4.0.0</modelVersion>
    <groupId>im.wma.dev.Creepair</groupId>
    <artifactId>Creepair</artifactId>
-   <version>0.1-DEV</version>
+   <version>0.2-DEV</version>
    <packaging>jar</packaging>
    <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -13,10 +13,6 @@
             <id>spigot</id>
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
-      <repository>
-         <id>papermc</id>
-         <url>https://papermc.io/repo/repository/maven-public/</url>
-      </repository>
         <repository>
             <id>sk89q-repo</id>
             <url>http://maven.sk89q.com/repo/</url>

@@ -1,13 +1,25 @@
+# Block names from
+# https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
 config: true
+api-version: 1.14 # Can also be 1.13
 worlds:
-- world
+  - world
 above_y: 54
 natural_blocks:
-- GRASS
-- DIRT
-- SANDSTONE
-- SAND
-- GRAVEL
-- LOG
-- LEAVES
-- STONE
+  - GRASS
+  - GRASS_BLOCK
+  - DIRT
+  - SANDSTONE
+  - SAND
+  - GRAVEL
+  - ACACIA_LOG
+  - BIRCH_LOG
+  - DARK_OAK_LOG
+  - OAK_LOG
+  - SPRUCE_LOG
+  - ACACIA_LEAVES
+  - BIRCH_LEAVES
+  - DARK_OAK_LEAVES
+  - OAK_LEAVES
+  - SPRUCE_LEAVES
+  - STONE

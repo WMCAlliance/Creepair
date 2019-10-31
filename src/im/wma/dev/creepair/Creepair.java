@@ -3,8 +3,8 @@ package im.wma.dev.creepair;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import org.bukkit.Effect;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
@@ -62,7 +62,7 @@ public class Creepair extends JavaPlugin implements Listener {
     private List<Material> getMaterialList(List<String> names) {
     	List<Material> materials = new ArrayList<>(names.size());
     	for (String materialName : names) {
-    		Material material = Material.matchMaterial(materialName);
+    		Material material = Material.getMaterial(materialName);
     		if (material == null) {
     			getLogger().log(Level.WARNING, "Skipping material {0} didn''t match a material.", materialName);
     		} else {
@@ -130,10 +130,11 @@ public class Creepair extends JavaPlugin implements Listener {
                     	continue;
                     }
 
-                    block.block.getLocation().getWorld().playEffect(block.block.getLocation(), Effect.STEP_SOUND, block.original.getId());
+                   // block.block.getLocation().getWorld().playEffect(block.block.getLocation(), Effect.STEP_SOUND, block.original.getId());
+                    block.block.getLocation().getWorld().playSound(block.block.getLocation(), Sound.BLOCK_GRASS_PLACE, 100, 1 );
                     block.block.setType(block.original);
                     // Make damage/data values (different leaves and such) work.
-                    // need's work for 1.14.4
+                    // need's work for 1.14.4 might be irrelevant
                     //block.block.getData().setData(block.originalData);
                     blocks.remove(0);
                 }
