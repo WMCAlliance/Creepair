@@ -133,7 +133,8 @@ public class Creepair extends JavaPlugin implements Listener {
                     block.block.getLocation().getWorld().playEffect(block.block.getLocation(), Effect.STEP_SOUND, block.original.getId());
                     block.block.setType(block.original);
                     // Make damage/data values (different leaves and such) work.
-                    block.block.setData(block.originalData);
+                    // need's work for 1.14.4
+                    //block.block.getData().setData(block.originalData);
                     blocks.remove(0);
                 }
             }

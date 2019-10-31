@@ -1,6 +1,6 @@
 config: true
 worlds:
-- survival
+- world
 above_y: 54
 natural_blocks:
 - GRASS
