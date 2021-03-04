@@ -47,13 +47,6 @@
                <include>config.yml</include>
             </includes>
          </resource>
-         <resource>
-            <directory>${project.basedir}/res</directory><!-- from -->
-            <targetPath>${project.build.directory}/Creepair</targetPath><!-- to -->
-            <includes><!-- what -->
-               <include>*.yml</include>
-            </includes>
-         </resource>
       </resources>
       <plugins>
          <plugin>
