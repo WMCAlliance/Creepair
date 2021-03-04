@@ -27,8 +27,6 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
           name: Creepair (#${{ github.run_number }})
-          path: |
-            target/Creepair/
-            target/*.jar
+          path: target/*.jar
 
         
