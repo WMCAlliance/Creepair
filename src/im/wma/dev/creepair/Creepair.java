@@ -3,9 +3,11 @@ package im.wma.dev.creepair;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
+
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,15 +16,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Creepair extends JavaPlugin implements Listener {
-    private final ArrayList<String> worlds = new ArrayList<String>();
-    private final List<Material> naturalBlocks = new ArrayList<Material>();
+    private final ArrayList<String> worlds = new ArrayList<>();
+    private final List<Material> naturalBlocks = new ArrayList<>();
     private int y;
     private RepairHelper helper;
 
 
     @Override
     public void onEnable() {
-	this.saveDefaultConfig();
+        this.saveDefaultConfig();
         if (!this.getConfig().contains("config")) {
             this.getConfig().options().copyDefaults(true);
         }
@@ -46,63 +48,62 @@ public class Creepair extends JavaPlugin implements Listener {
 
         if (event.getLocation().getBlockY() >= y) {
             event.setYield(0F);
-
             for (Block block : event.blockList()) {
                 if (naturalBlocks.contains(block.getType())) {
-                	helper.add(new CreepairBlock(block, block.getType()));
+                    helper.add(new CreepairBlock(block, block.getType()));
                 } else {
-                	for (ItemStack drop : block.getDrops()) {
-                		block.getWorld().dropItemNaturally(block.getLocation(), drop);
-                	}
+                    for (ItemStack drop : block.getDrops()) {
+                        block.getWorld().dropItemNaturally(block.getLocation(), drop);
+                    }
                 }
             }
         }
     }
 
     private List<Material> getMaterialList(List<String> names) {
-    	List<Material> materials = new ArrayList<>(names.size());
-    	for (String materialName : names) {
-    		Material material = Material.matchMaterial(materialName);
-    		if (material == null) {
-    			getLogger().log(Level.WARNING, "Skipping material {0} didn''t match a material.", materialName);
-    		} else {
-    			materials.add(material);
-    			getLogger().log(Level.INFO, "Added material {0}.", materialName);
-    		}
-    	}
+        List<Material> materials = new ArrayList<>(names.size());
+        for (String materialName : names) {
+            Material material = Material.matchMaterial(materialName);
+            if (material == null) {
+                getLogger().log(Level.WARNING, "Skipping material {0} didn''t match a material.", materialName);
+            } else {
+                materials.add(material);
+                getLogger().log(Level.INFO, "Added material {0}.", materialName);
+            }
+        }
 
-    	return materials;
+        return materials;
     }
 
-    public class CreepairBlock implements Comparable<CreepairBlock>{
+    public class CreepairBlock implements Comparable<CreepairBlock> {
         public Block block;
         public Material original;
-        public byte originalData;
+        public BlockData originalData;
 
         public CreepairBlock(Block block, Material original) {
-         this.block = block;
-         this.original = original;
-         this.originalData = block.getData();
+            this.block = block;
+            this.original = original;
+            this.originalData = block.getBlockData();
         }
 
         public int compareTo(CreepairBlock otherBlock) {
             if (otherBlock.equals(this)) {
-        	return 0;
+                return 0;
             } else if (block.getY() == otherBlock.block.getY()) {
-        	return block.getX() - otherBlock.block.getX();
+                return block.getX() - otherBlock.block.getX();
             } else {
-        	return block.getY() - otherBlock.block.getY();
+                return block.getY() - otherBlock.block.getY();
             }
         }
 
         @Override
-	public boolean equals(Object object) {
+        public boolean equals(Object object) {
             if (object instanceof CreepairBlock) {
-        	CreepairBlock otherBlock = (CreepairBlock) object;
-        	if (otherBlock.block.getLocation().equals(block.getLocation()) &&
-        		otherBlock.original == original && otherBlock.originalData == originalData) {
-        	    return true;
-        	}
+                CreepairBlock otherBlock = (CreepairBlock) object;
+                if (otherBlock.block.getLocation().equals(block.getLocation()) &&
+                        otherBlock.original == original && otherBlock.originalData == originalData) {
+                    return true;
+                }
             }
             return false;
         }
@@ -126,15 +127,14 @@ public class Creepair extends JavaPlugin implements Listener {
 
                     // Don't destroy player repairs.
                     if (block.block.getLocation().getBlock().getType() != Material.AIR) {
-                    	blocks.remove(0);
-                    	continue;
+                        blocks.remove(0);
+                        continue;
                     }
 
-                    block.block.getLocation().getWorld().playEffect(block.block.getLocation(), Effect.STEP_SOUND, block.original.getId());
+                    block.block.getLocation().getWorld().playEffect(block.block.getLocation(), Effect.STEP_SOUND, 1);
                     block.block.setType(block.original);
                     // Make damage/data values (different leaves and such) work.
-                    // need's work for 1.14.4
-                    //block.block.getData().setData(block.originalData);
+                    block.block.setBlockData(block.originalData);
                     blocks.remove(0);
                 }
             }
