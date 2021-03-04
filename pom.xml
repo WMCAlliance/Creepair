@@ -3,7 +3,7 @@
    <modelVersion>4.0.0</modelVersion>
    <groupId>im.wma.dev.Creepair</groupId>
    <artifactId>Creepair</artifactId>
-   <version>0.1-DEV</version>
+   <version>0.2-DEV</version>
    <packaging>jar</packaging>
    <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -46,6 +46,13 @@
                <include>plugin.yml</include>
             </includes>
          </resource>
+         <resource>
+            <directory>${project.basedir}/res</directory><!-- from -->
+            <targetPath>${project.build.directory}/Creepair</targetPath><!-- to -->
+            <includes><!-- what -->
+               <include>*.yml</include>
+            </includes>
+         </resource>
       </resources>
       <plugins>
          <plugin>
@@ -71,6 +78,6 @@
    <description>The goal of this plugin is to repair natural creeper-exploded blocks near, or above, ground level.</description>
    <ciManagement>
       <system>Jenkins</system>
-      <url>http://ci.blny.me/job/Creepair/</url>
+      <url>http://jenkins.blny.me/job/Creepair/</url>
    </ciManagement>
 </project>
