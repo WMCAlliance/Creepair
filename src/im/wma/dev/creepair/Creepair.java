@@ -1,18 +1,24 @@
 package im.wma.dev.creepair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Creepair extends JavaPlugin implements Listener {
@@ -38,6 +44,24 @@ public class Creepair extends JavaPlugin implements Listener {
         this.getServer().getScheduler().scheduleSyncRepeatingTask(this, this.helper, 10, 10);
 
         this.getServer().getPluginManager().registerEvents(this, this);
+        // Anonymous implementation of "/creepair" root command.
+        CommandBase<Creepair> creepairCommand = new CommandBase<Creepair>(this) {
+            @Override
+            public boolean runCommand(CommandSender sender, Command rootCommand, String label, String[] args) {
+                sender.sendMessage("The root command does nothing! Use a sub command.");
+                return false;
+            }
+        };
+        CommandAddBlock commandAddBlock = new CommandAddBlock(this);
+        // Register "/creepair add" with the root "/creepair" command.
+        creepairCommand.registerSubCommand("add", commandAddBlock);
+        CommandListBlocks commandListBlocks = new CommandListBlocks(this);
+        // Register "/creepair list with the root "/creepair" command.
+        creepairCommand.registerSubCommand("list", new CommandListBlocks(this));
+
+
+        // Register "/check" command executor with Bukkit.
+        getCommand("creepair").setExecutor(creepairCommand);
     }
 
     @EventHandler
@@ -75,6 +99,63 @@ public class Creepair extends JavaPlugin implements Listener {
         return materials;
     }
 
+    public class CommandAddBlock extends CommandBase<Creepair> {
+        public CommandAddBlock(Creepair plugin) {
+            super(plugin);
+        }
+
+        @Override
+        public boolean runCommand(CommandSender sender, Command rootCommand, String label, String[] args) {
+            if (sender.hasPermission("creepair.add")) {
+                if (args.length == 1) {
+                    Material material = Material.matchMaterial(args[0]);
+                    if (material == null) {
+                        sender.sendMessage("[Creepair] Please pass in a correct material name");
+                    } else if (naturalBlocks.contains(material)) {
+                        sender.sendMessage("[Creepair] Material already present");
+                    } else {
+                        naturalBlocks.add(material);
+                        addBlockToConfig(material.name());
+                        sender.sendMessage("[Creepair] Added material " + material.name());
+                    }
+                } else if (args.length == 0) {
+                    sender.sendMessage("[Creepair] Please pass in a material name");
+                } else {
+                    sender.sendMessage("[Creepair] Please only pass in a single material name at a time");
+                }
+            } else {
+                sender.sendMessage("[Creepair] No permission for command: " + rootCommand.getName() + " " + label);
+            }
+            return true;
+        }
+    }
+
+    public class CommandListBlocks extends CommandBase<Creepair> {
+        public CommandListBlocks(Creepair plugin) {
+            super(plugin);
+        }
+
+        @Override
+        public boolean runCommand(CommandSender sender, Command rootCommand, String label, String[] args) {
+            if (sender.hasPermission("creepair.list")) {
+                sender.sendMessage("[Creepair] Configuration has " + naturalBlocks.size() + " blocks");
+                for (Material block : naturalBlocks) {
+                    sender.sendMessage(" - " + block.createBlockData().getMaterial().name());
+                }
+            } else {
+                sender.sendMessage("[Creepair] No permission for command: " + rootCommand.getName() + " " + label);
+            }
+            return true;
+        }
+    }
+
+    public void addBlockToConfig(String name) {
+        List<String> natural_blocks = this.getConfig().getStringList("natural_blocks");
+        natural_blocks.add(name);
+        this.getConfig().set("natural_blocks", natural_blocks);
+        saveConfig();
+    }
+
     public class CreepairBlock implements Comparable<CreepairBlock> {
         public Block block;
         public Material original;
@@ -100,10 +181,8 @@ public class Creepair extends JavaPlugin implements Listener {
         public boolean equals(Object object) {
             if (object instanceof CreepairBlock) {
                 CreepairBlock otherBlock = (CreepairBlock) object;
-                if (otherBlock.block.getLocation().equals(block.getLocation()) &&
-                        otherBlock.original == original && otherBlock.originalData == originalData) {
-                    return true;
-                }
+                return otherBlock.block.getLocation().equals(block.getLocation()) &&
+                        otherBlock.original == original && otherBlock.originalData == originalData;
             }
             return false;
         }
@@ -140,5 +219,4 @@ public class Creepair extends JavaPlugin implements Listener {
             }
         }
     }
-
 }
