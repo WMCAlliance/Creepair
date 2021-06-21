@@ -13,6 +13,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -51,13 +52,20 @@ public class Creepair extends JavaPlugin implements Listener {
                 sender.sendMessage("The root command does nothing! Use a sub command.");
                 return false;
             }
+
+            @Override
+            public List<String> tabCommand(CommandSender sender, Command rootCommand, String label, String[] args) {
+                return null;
+            }
         };
         CommandAddBlock commandAddBlock = new CommandAddBlock(this);
         // Register "/creepair add" with the root "/creepair" command.
         creepairCommand.registerSubCommand("add", commandAddBlock);
+        creepairCommand.registerSubCommandTab("add", commandAddBlock);
+
         CommandListBlocks commandListBlocks = new CommandListBlocks(this);
         // Register "/creepair list with the root "/creepair" command.
-        creepairCommand.registerSubCommand("list", new CommandListBlocks(this));
+        creepairCommand.registerSubCommand("list", commandListBlocks);
 
 
         // Register "/check" command executor with Bukkit.
@@ -99,7 +107,7 @@ public class Creepair extends JavaPlugin implements Listener {
         return materials;
     }
 
-    public class CommandAddBlock extends CommandBase<Creepair> {
+    public class CommandAddBlock extends CommandBase<Creepair> implements TabExecutor {
         public CommandAddBlock(Creepair plugin) {
             super(plugin);
         }
@@ -128,6 +136,17 @@ public class Creepair extends JavaPlugin implements Listener {
             }
             return true;
         }
+        @Override
+        public List<String> tabCommand(CommandSender sender, Command rootCommand, String label, String[] args) {
+            List<String> tabComplete = new ArrayList<>();
+            if(args.length == 1) {
+                for (Material materialType : Material.values()){
+                    if (materialType.toString().startsWith(args[0])){
+                        tabComplete.add((materialType.toString()));
+                    }
+                }
+            }return tabComplete;
+        }
     }
 
     public class CommandListBlocks extends CommandBase<Creepair> {
@@ -146,6 +165,11 @@ public class Creepair extends JavaPlugin implements Listener {
                 sender.sendMessage("[Creepair] No permission for command: " + rootCommand.getName() + " " + label);
             }
             return true;
+        }
+
+        @Override
+        public List<String> tabCommand(CommandSender sender, Command rootCommand, String label, String[] args) {
+            return null;
         }
     }
 

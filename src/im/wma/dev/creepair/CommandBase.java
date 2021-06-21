@@ -3,9 +3,11 @@ package im.wma.dev.creepair;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,9 +18,10 @@ import java.util.Map;
  *
  * @param <P> The implementing plugin.
  */
-public abstract class CommandBase<P extends Plugin> implements CommandExecutor {
+public abstract class CommandBase<P extends Plugin> implements CommandExecutor, TabExecutor {
 
     private final Map<String, CommandExecutor> subCommands = new HashMap<>();
+    private final Map<String, TabExecutor> subCommandsTab = new HashMap<>();
     private final P plugin;
 
     /**
@@ -47,6 +50,10 @@ public abstract class CommandBase<P extends Plugin> implements CommandExecutor {
     public void registerSubCommand(String label, CommandExecutor subCommand) {
         subCommands.put(label.toLowerCase(), subCommand);
     }
+    public void registerSubCommandTab(String label, TabExecutor subCommandTab) {
+        subCommandsTab.put(label.toLowerCase(), subCommandTab);
+    }
+
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -61,6 +68,19 @@ public abstract class CommandBase<P extends Plugin> implements CommandExecutor {
         }
         return runCommand(sender, command, label, args);
     }
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+        if (args.length > 1) {
+            TabExecutor child = subCommandsTab.get(args[0].toLowerCase());
+            if (child != null) {
+                label = args[0];
+                String[] newArgs = new String[args.length - 1];
+                System.arraycopy(args, 1, newArgs, 0, newArgs.length);
+                return child.onTabComplete(sender, command, label, newArgs);
+            }
+        }
+        return tabCommand(sender, command, label, args);
+    }
 
     /**
      * Executes the given commands and returns its success.
@@ -74,4 +94,5 @@ public abstract class CommandBase<P extends Plugin> implements CommandExecutor {
      * @return true if a valid command, false otherwise.
      */
     public abstract boolean runCommand(CommandSender sender, Command rootCommand, String label, String[] args);
+    public abstract List<String> tabCommand(CommandSender sender, Command rootCommand, String label, String[] args);
 }
