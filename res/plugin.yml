@@ -2,29 +2,7 @@ name: Creepair
 main: im.wma.dev.creepair.Creepair
 version: ${version}
 website: http://wma.im
-api-version: 1.16 # Because of this Creepair is not compatible with verisons lower than 1.14
 commands:
-  creepair:
-    description: Nothing to see here :P
-    usage: /creepair
-  creepair list:
-    description: Returns the current Creepair Block List config
-    usage: /creepair list
-    permission: creepair.list
-  creepair add:
-    description: Add a new Material to the Creepair config
-    usage: /creepair add (MATERIAL NAME)
-    permission: creepair.add
-permissions:
-  creepair.list:
-    description: Allows list command
-    default: op
-  creepair.add:
-    description: Allows add command
-    default: op
-  creepair.*:
-    description: Wildcard permission
-    default: op
-    children:
-      creepair.add: true
-      creepair.list: true
+  wmafixes:
+    description: TODO.
+    usage: "TODO"
