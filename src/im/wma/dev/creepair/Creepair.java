@@ -1,9 +1,7 @@
 package im.wma.dev.creepair;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 
 import org.bukkit.Effect;
@@ -11,7 +9,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.EntityType;
@@ -19,7 +16,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Creepair extends JavaPlugin implements Listener {
@@ -49,8 +45,8 @@ public class Creepair extends JavaPlugin implements Listener {
         CommandBase<Creepair> creepairCommand = new CommandBase<Creepair>(this) {
             @Override
             public boolean runCommand(CommandSender sender, Command rootCommand, String label, String[] args) {
-                sender.sendMessage("The root command does nothing! Use a sub command.");
-                return false;
+                sender.sendMessage("Creepair v" + getPlugin().getDescription().getVersion());
+                return true;
             }
 
             @Override

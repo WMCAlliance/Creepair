@@ -5,7 +5,7 @@ website: http://wma.im
 api-version: 1.16 # Because of this Creepair is not compatible with verisons lower than 1.14
 commands:
   creepair:
-    description: Nothing to see here :P
+    description: Returns the plugin version
     usage: /creepair
   creepair list:
     description: Returns the current Creepair Block List config
