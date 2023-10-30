@@ -62,11 +62,27 @@ public class Creepair extends JavaPlugin implements Listener {
         CommandListBlocks commandListBlocks = new CommandListBlocks(this);
         // Register "/creepair list with the root "/creepair" command.
         creepairCommand.registerSubCommand("list", commandListBlocks);
+		
+        CommandReload commandReload = new CommandReload(this);
+		creepairCommand.registerSubCommand("reload", commandReload);
 
 
         // Register "/check" command executor with Bukkit.
         getCommand("creepair").setExecutor(creepairCommand);
     }
+
+	public void reloadPluginConfig(CommandSender sender) {
+		reloadConfig();
+		
+		worlds.clear();
+		naturalBlocks.clear();
+		
+		worlds.addAll(getConfig().getStringList("worlds"));
+		y = this.getConfig().getInt("above_y", 50);
+		naturalBlocks.addAll(getMaterialList(getConfig().getStringList("natural_blocks")));
+		
+		sender.sendMessage("Creepair reloaded successfully");
+	}
 
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent event) {
@@ -168,6 +184,27 @@ public class Creepair extends JavaPlugin implements Listener {
             return null;
         }
     }
+	
+	public class CommandReload extends CommandBase<Creepair> {
+        public CommandReload(Creepair plugin) {
+            super(plugin);
+        }
+
+        @Override
+        public boolean runCommand(CommandSender sender, Command rootCommand, String label, String[] args) {
+            if (sender.hasPermission("creepair.reload")) {
+				super.getPlugin().reloadPluginConfig(sender);
+            } else {
+                sender.sendMessage("[Creepair] No permission for command: " + rootCommand.getName() + " " + label);
+            }
+            return true;
+        }
+
+        @Override
+        public List<String> tabCommand(CommandSender sender, Command rootCommand, String label, String[] args) {
+            return null;
+        }
+	}
 
     public void addBlockToConfig(String name) {
         List<String> natural_blocks = this.getConfig().getStringList("natural_blocks");

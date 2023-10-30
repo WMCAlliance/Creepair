@@ -15,6 +15,10 @@ commands:
     description: Add a new Material to the Creepair config
     usage: /creepair add (MATERIAL NAME)
     permission: creepair.add
+  creepair reload:
+    description: Reload Creepair config
+    usage: /creepair reload
+    permission: creepair.reload
 permissions:
   creepair.list:
     description: Allows list command
@@ -22,9 +26,13 @@ permissions:
   creepair.add:
     description: Allows add command
     default: op
+  creepair.reload:
+    description: Allows reloading
+    default: op
   creepair.*:
     description: Wildcard permission
     default: op
     children:
       creepair.add: true
       creepair.list: true
+      creepair.reload: true
