@@ -18,7 +18,7 @@
       <dependency>
          <groupId>org.spigotmc</groupId>
          <artifactId>spigot-api</artifactId>
-         <version>1.19-R0.1-SNAPSHOT</version>
+         <version>1.21-R0.1-SNAPSHOT</version>
          <scope>provided</scope>
       </dependency>
    </dependencies>
@@ -60,6 +60,6 @@
    <description>The goal of this plugin is to repair natural creeper-exploded blocks near, or above, ground level.</description>
    <ciManagement>
       <system>Jenkins</system>
-      <url>http://jenkins.blny.me/job/Creepair/</url>
+      <url>https://github.com/WMCAlliance/Creepair/actions/</url>
    </ciManagement>
 </project>
