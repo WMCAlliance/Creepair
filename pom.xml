@@ -59,7 +59,7 @@
    </scm>
    <description>The goal of this plugin is to repair natural creeper-exploded blocks near, or above, ground level.</description>
    <ciManagement>
-      <system>Jenkins</system>
+      <system>Github Actions</system>
       <url>https://github.com/WMCAlliance/Creepair/actions/</url>
    </ciManagement>
 </project>
