@@ -3,7 +3,7 @@
    <modelVersion>4.0.0</modelVersion>
    <groupId>im.wma.dev.Creepair</groupId>
    <artifactId>Creepair</artifactId>
-   <version>0.4-DEV</version>
+   <version>0.5-DEV</version>
    <packaging>jar</packaging>
    <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -13,12 +13,22 @@
             <id>spigot</id>
             <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
         </repository>
+         <repository>
+            <id>sk89q-repo</id>
+            <url>https://maven.enginehub.org/repo/</url>
+         </repository>
    </repositories>
    <dependencies>
       <dependency>
          <groupId>org.spigotmc</groupId>
          <artifactId>spigot-api</artifactId>
          <version>1.21-R0.1-SNAPSHOT</version>
+         <scope>provided</scope>
+      </dependency>
+      <dependency>
+         <groupId>com.sk89q.worldguard</groupId>
+         <artifactId>worldguard-bukkit</artifactId>
+         <version>7.0.10</version>
          <scope>provided</scope>
       </dependency>
    </dependencies>
@@ -42,8 +52,8 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.0</version>
             <configuration>
-               <source>1.7</source>
-               <target>1.7</target>
+               <source>21</source>
+               <target>21</target>
             </configuration>
          </plugin>
       </plugins>

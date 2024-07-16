@@ -2,7 +2,8 @@ name: Creepair
 main: im.wma.dev.creepair.Creepair
 version: ${version}
 website: http://wma.im
-api-version: 1.16 # Because of this Creepair is not compatible with verisons lower than 1.14
+api-version: 1.20 # Because of this Creepair is not compatible with verisons lower than 1.14
+softdepend: [WorldGuard]
 commands:
   creepair:
     description: Returns the plugin version

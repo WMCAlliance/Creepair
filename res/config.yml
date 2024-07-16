@@ -5,14 +5,15 @@ worlds:
   - world
 above_y: 54
 natural_blocks:
-  - GRASS
+  - SHORT_GRASS
+  - TALL_GRASS
   - GRASS_BLOCK
   - DIRT
   - SANDSTONE
   - SAND
   - GRAVEL
   - STONE
-  - GRASS_PATH
+  - DIRT_PATH
   - ACACIA_LEAVES
   - ACACIA_LOG
   - BIRCH_LEAVES
