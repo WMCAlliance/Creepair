@@ -99,6 +99,7 @@ public class Creepair extends JavaPlugin implements Listener {
             return;
         }
 
+        // Check WorldGuard status, if present let WorldGuard handle the event in a region with Flags.CREEPER_EXPLOSION
         if(!(this.wg == null)){
             RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
             com.sk89q.worldedit.util.Location loc = BukkitAdapter.adapt(event.getLocation());
