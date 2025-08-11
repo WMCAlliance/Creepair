@@ -10,23 +10,23 @@ public class SortedList<T extends Comparable<T>> extends ArrayList<T> {
 
     @Override
     public boolean add(T object) {
-	boolean returnValue = super.add(object);
-	Collections.sort(this);
-	return returnValue;
+        boolean returnValue = super.add(object);
+        Collections.sort(this);
+        return returnValue;
     }
 
     @Override
     public boolean addAll(Collection<? extends T> objects) {
-	boolean returnValue = super.addAll(objects);
-	Collections.sort(this);
-	return returnValue;
+        boolean returnValue = super.addAll(objects);
+        Collections.sort(this);
+        return returnValue;
     }
 
     public T first() {
-	return get(0);
+        return get(0);
     }
 
     public T last() {
-	return get(size() - 1);
+        return get(size() - 1);
     }
 }

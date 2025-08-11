@@ -13,7 +13,8 @@ import java.util.Map;
 /**
  * A simple class for implementing sub commands.
  * Source: https://gist.github.com/dumptruckman/6d5fb33b662ce91e2d232b22a19201d3
- * Just register one of these as the executor for your plugin's root command and then register sub commands to this
+ * Just register one of these as the executor for your plugin's root command and
+ * then register sub commands to this
  * CommandBase with {@link #registerSubCommand(String, CommandExecutor)}.
  *
  * @param <P> The implementing plugin.
@@ -43,17 +44,18 @@ public abstract class CommandBase<P extends Plugin> implements CommandExecutor, 
     /**
      * Registers a sub command to this command.
      *
-     * @param label The label for the sub command.
-     * @param subCommand The sub command to register which can either be a plain CommandExecutor or another
+     * @param label      The label for the sub command.
+     * @param subCommand The sub command to register which can either be a plain
+     *                   CommandExecutor or another
      *                   CommandBase if further command nesting is desired.
      */
     public void registerSubCommand(String label, CommandExecutor subCommand) {
         subCommands.put(label.toLowerCase(), subCommand);
     }
+
     public void registerSubCommandTab(String label, TabExecutor subCommandTab) {
         subCommandsTab.put(label.toLowerCase(), subCommandTab);
     }
-
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -68,6 +70,7 @@ public abstract class CommandBase<P extends Plugin> implements CommandExecutor, 
         }
         return runCommand(sender, command, label, args);
     }
+
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         if (args.length > 1) {
@@ -87,12 +90,14 @@ public abstract class CommandBase<P extends Plugin> implements CommandExecutor, 
      *
      * Note that the success returned may propagate up to the root command.
      *
-     * @param sender Source of the command.
+     * @param sender      Source of the command.
      * @param rootCommand The top level command that was executed.
-     * @param label Alias of the command that was used - the sub command label being used.
-     * @param args Arguments for the sub command.
+     * @param label       Alias of the command that was used - the sub command label
+     *                    being used.
+     * @param args        Arguments for the sub command.
      * @return true if a valid command, false otherwise.
      */
     public abstract boolean runCommand(CommandSender sender, Command rootCommand, String label, String[] args);
+
     public abstract List<String> tabCommand(CommandSender sender, Command rootCommand, String label, String[] args);
 }

@@ -50,7 +50,6 @@ public class Creepair extends JavaPlugin implements Listener {
         naturalBlocks.addAll(getMaterialList(this.getConfig().getStringList("natural_blocks")));
         naturalTags.addAll(getTagList(this.getConfig().getStringList("natural_tags")));
 
-
         this.helper = new RepairHelper();
         this.getServer().getScheduler().scheduleSyncRepeatingTask(this, this.helper, 10, 10);
 
@@ -76,10 +75,9 @@ public class Creepair extends JavaPlugin implements Listener {
         CommandListBlocks commandListBlocks = new CommandListBlocks(this);
         // Register "/creepair list with the root "/creepair" command.
         creepairCommand.registerSubCommand("list", commandListBlocks);
-		
-        CommandReload commandReload = new CommandReload(this);
-		creepairCommand.registerSubCommand("reload", commandReload);
 
+        CommandReload commandReload = new CommandReload(this);
+        creepairCommand.registerSubCommand("reload", commandReload);
 
         // Register "/check" command executor with Bukkit.
         getCommand("creepair").setExecutor(creepairCommand);
@@ -87,20 +85,20 @@ public class Creepair extends JavaPlugin implements Listener {
         this.wg = (WorldGuardPlugin) this.getServer().getPluginManager().getPlugin("WorldGuard");
     }
 
-	public void reloadPluginConfig(CommandSender sender) {
-		reloadConfig();
-		
-		worlds.clear();
+    public void reloadPluginConfig(CommandSender sender) {
+        reloadConfig();
+
+        worlds.clear();
         naturalBlocks.clear();
         naturalTags.clear();
 
-		worlds.addAll(getConfig().getStringList("worlds"));
-		y = this.getConfig().getInt("above_y", 50);
-		naturalBlocks.addAll(getMaterialList(getConfig().getStringList("natural_blocks")));
+        worlds.addAll(getConfig().getStringList("worlds"));
+        y = this.getConfig().getInt("above_y", 50);
+        naturalBlocks.addAll(getMaterialList(getConfig().getStringList("natural_blocks")));
         naturalTags.addAll(getTagList(this.getConfig().getStringList("natural_tags")));
 
-		sender.sendMessage("Creepair reloaded successfully");
-	}
+        sender.sendMessage("Creepair reloaded successfully");
+    }
 
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent event) {
@@ -108,8 +106,9 @@ public class Creepair extends JavaPlugin implements Listener {
             return;
         }
 
-        // Check WorldGuard status, if present let WorldGuard handle the event in a region with Flags.CREEPER_EXPLOSION
-        if(!(this.wg == null)){
+        // Check WorldGuard status, if present let WorldGuard handle the event in a
+        // region with Flags.CREEPER_EXPLOSION
+        if (!(this.wg == null)) {
             RegionQuery query = WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery();
             com.sk89q.worldedit.util.Location loc = BukkitAdapter.adapt(event.getLocation());
             if (!query.testState(loc, null, Flags.CREEPER_EXPLOSION)) {
@@ -200,16 +199,18 @@ public class Creepair extends JavaPlugin implements Listener {
             }
             return true;
         }
+
         @Override
         public List<String> tabCommand(CommandSender sender, Command rootCommand, String label, String[] args) {
             List<String> tabComplete = new ArrayList<>();
-            if(args.length == 1) {
-                for (Material materialType : Material.values()){
-                    if (materialType.toString().startsWith(args[0])){
+            if (args.length == 1) {
+                for (Material materialType : Material.values()) {
+                    if (materialType.toString().startsWith(args[0])) {
                         tabComplete.add((materialType.toString()));
                     }
                 }
-            }return tabComplete;
+            }
+            return tabComplete;
         }
     }
 
@@ -221,7 +222,8 @@ public class Creepair extends JavaPlugin implements Listener {
         @Override
         public boolean runCommand(CommandSender sender, Command rootCommand, String label, String[] args) {
             if (sender.hasPermission("creepair.list")) {
-                sender.sendMessage("[Creepair] Configuration has " + naturalBlocks.size() + " blocks and " + naturalTags.size() + " tags.");
+                sender.sendMessage("[Creepair] Configuration has " + naturalBlocks.size() + " blocks and "
+                        + naturalTags.size() + " tags.");
                 if (naturalBlocks.size() > 0) {
                     sender.sendMessage("Blocks:");
                     for (Material block : naturalBlocks) {
@@ -231,7 +233,8 @@ public class Creepair extends JavaPlugin implements Listener {
                 if (naturalTags.size() > 0) {
                     sender.sendMessage("Tags:");
                     for (Tag<Material> tag : naturalTags) {
-                        sender.sendMessage(" - " + ChatColor.GREEN + tag.getKey().getKey() + " " + ChatColor.AQUA + tag.getValues());
+                        sender.sendMessage(" - " + ChatColor.GREEN + tag.getKey().getKey() + " " + ChatColor.AQUA
+                                + tag.getValues());
                     }
                 }
             } else {
@@ -245,8 +248,8 @@ public class Creepair extends JavaPlugin implements Listener {
             return null;
         }
     }
-	
-	public class CommandReload extends CommandBase<Creepair> {
+
+    public class CommandReload extends CommandBase<Creepair> {
         public CommandReload(Creepair plugin) {
             super(plugin);
         }
@@ -254,7 +257,7 @@ public class Creepair extends JavaPlugin implements Listener {
         @Override
         public boolean runCommand(CommandSender sender, Command rootCommand, String label, String[] args) {
             if (sender.hasPermission("creepair.reload")) {
-				super.getPlugin().reloadPluginConfig(sender);
+                super.getPlugin().reloadPluginConfig(sender);
             } else {
                 sender.sendMessage("[Creepair] No permission for command: " + rootCommand.getName() + " " + label);
             }
@@ -265,7 +268,7 @@ public class Creepair extends JavaPlugin implements Listener {
         public List<String> tabCommand(CommandSender sender, Command rootCommand, String label, String[] args) {
             return null;
         }
-	}
+    }
 
     public void addBlockToConfig(String name) {
         List<String> natural_blocks = this.getConfig().getStringList("natural_blocks");
@@ -328,7 +331,8 @@ public class Creepair extends JavaPlugin implements Listener {
                         continue;
                     }
 
-                    block.block.getLocation().getWorld().playEffect(block.block.getLocation(), Effect.STEP_SOUND, block.original);
+                    block.block.getLocation().getWorld().playEffect(block.block.getLocation(), Effect.STEP_SOUND,
+                            block.original);
                     block.block.setType(block.original);
                     // Make damage/data values (different leaves and such) work.
                     block.block.setBlockData(block.originalData);
