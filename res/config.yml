@@ -7,20 +7,13 @@ above_y: 54
 natural_blocks:
   - SHORT_GRASS
   - TALL_GRASS
-  - GRASS_BLOCK
-  - DIRT
   - SANDSTONE
-  - SAND
+  - RED_SANDSTONE
   - GRAVEL
   - STONE
   - DIRT_PATH
-  - ACACIA_LEAVES
-  - ACACIA_LOG
-  - BIRCH_LEAVES
-  - BIRCH_LOG
-  - DARK_OAK_LEAVES
-  - DARK_OAK_LOG
-  - OAK_LEAVES
-  - OAK_LOG
-  - SPRUCE_LEAVES
-  - SPRUCE_LOG
+natural_tags:
+  - leaves
+  - overworld_natural_logs
+  - sand
+  - dirt

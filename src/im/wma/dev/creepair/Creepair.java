@@ -8,8 +8,13 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.command.Command;
@@ -27,6 +32,7 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 public class Creepair extends JavaPlugin implements Listener {
     private final ArrayList<String> worlds = new ArrayList<>();
     private final List<Material> naturalBlocks = new ArrayList<>();
+    private final List<Tag<Material>> naturalTags = new ArrayList<>();
     private int y;
     private RepairHelper helper;
 
@@ -42,6 +48,7 @@ public class Creepair extends JavaPlugin implements Listener {
         worlds.addAll(this.getConfig().getStringList("worlds"));
         y = this.getConfig().getInt("above_y", 50);
         naturalBlocks.addAll(getMaterialList(this.getConfig().getStringList("natural_blocks")));
+        naturalTags.addAll(getTagList(this.getConfig().getStringList("natural_tags")));
 
 
         this.helper = new RepairHelper();
@@ -84,12 +91,14 @@ public class Creepair extends JavaPlugin implements Listener {
 		reloadConfig();
 		
 		worlds.clear();
-		naturalBlocks.clear();
-		
+        naturalBlocks.clear();
+        naturalTags.clear();
+
 		worlds.addAll(getConfig().getStringList("worlds"));
 		y = this.getConfig().getInt("above_y", 50);
 		naturalBlocks.addAll(getMaterialList(getConfig().getStringList("natural_blocks")));
-		
+        naturalTags.addAll(getTagList(this.getConfig().getStringList("natural_tags")));
+
 		sender.sendMessage("Creepair reloaded successfully");
 	}
 
@@ -111,8 +120,9 @@ public class Creepair extends JavaPlugin implements Listener {
         if (event.getLocation().getBlockY() >= y) {
             event.setYield(0F);
             for (Block block : event.blockList()) {
-                if (naturalBlocks.contains(block.getType())) {
-                    helper.add(new CreepairBlock(block, block.getType()));
+                Material mat = block.getType();
+                if (naturalBlocks.contains(mat) || this.blockHasNaturalTag(mat)) {
+                    helper.add(new CreepairBlock(block, mat));
                 } else {
                     for (ItemStack drop : block.getDrops()) {
                         block.getWorld().dropItemNaturally(block.getLocation(), drop);
@@ -135,6 +145,30 @@ public class Creepair extends JavaPlugin implements Listener {
         }
 
         return materials;
+    }
+
+    private List<Tag<Material>> getTagList(List<String> names) {
+        List<Tag<Material>> tags = new ArrayList<>(names.size());
+        for (String tagName : names) {
+            Tag<Material> tag = Bukkit.getTag("blocks", NamespacedKey.minecraft(tagName), Material.class);
+            if (tag == null) {
+                getLogger().log(Level.WARNING, "Skipping tag {0} didn''t match a valid tag.", tagName);
+            } else {
+                tags.add(tag);
+                getLogger().log(Level.INFO, "Added tag {0}.", tagName);
+            }
+        }
+
+        return tags;
+    }
+
+    private Boolean blockHasNaturalTag(Material mat) {
+        for (Tag<Material> tag : naturalTags) {
+            if (tag.isTagged(mat)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public class CommandAddBlock extends CommandBase<Creepair> implements TabExecutor {
@@ -187,9 +221,18 @@ public class Creepair extends JavaPlugin implements Listener {
         @Override
         public boolean runCommand(CommandSender sender, Command rootCommand, String label, String[] args) {
             if (sender.hasPermission("creepair.list")) {
-                sender.sendMessage("[Creepair] Configuration has " + naturalBlocks.size() + " blocks");
-                for (Material block : naturalBlocks) {
-                    sender.sendMessage(" - " + block.createBlockData().getMaterial().name());
+                sender.sendMessage("[Creepair] Configuration has " + naturalBlocks.size() + " blocks and " + naturalTags.size() + " tags.");
+                if (naturalBlocks.size() > 0) {
+                    sender.sendMessage("Blocks:");
+                    for (Material block : naturalBlocks) {
+                        sender.sendMessage(" - " + ChatColor.GREEN + block.createBlockData().getMaterial().name());
+                    }
+                }
+                if (naturalTags.size() > 0) {
+                    sender.sendMessage("Tags:");
+                    for (Tag<Material> tag : naturalTags) {
+                        sender.sendMessage(" - " + ChatColor.GREEN + tag.getKey().getKey() + " " + ChatColor.AQUA + tag.getValues());
+                    }
                 }
             } else {
                 sender.sendMessage("[Creepair] No permission for command: " + rootCommand.getName() + " " + label);
