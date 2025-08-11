@@ -1,8 +1,10 @@
 Creepair
 ========
 
-This plugin was originally coded by [jamietech](https://gist.github.com/jamietech) for us.
+A Spigot plugin that rebuilds natural environments after they're exploded by creepers. Blocks are rebuilt over the ~10 seconds or so after the explosion, allowing players to vacate the area safely.
 
-Basically, the goal of this plugin is to repair natural creeper-exploded blocks near, or above, ground level.
+Useful for large survival servers where creepers are likely to exist around the world spawn.
 
-Much of the detail was coded by [modwizcode](https://github.com/modwizcode) and thanks to her, this plugin is fully functioning.
+The configuration file allows limiting based on height and types of blocks (materials and tags).
+
+Compatible with WorldGuard to avoid block duplication.
